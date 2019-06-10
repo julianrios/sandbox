@@ -91,9 +91,27 @@ ENV lets you set environment variables that you can use later in your Dockerfile
 
 You may want to run your app as a different user with fewer privileges. The USER instruction makes this easy.
 
+docker images -> returns a list of created images
 
+docker rmi tagOfImage -> removes that image
+
+docker ps -a -> shows all containers
+
+docker rm name -> removes an image 
+
+docker system prune -> command will remove all stopped containers, all dangling images, and all unused networks
 
 Docker for EMUs?
+
+One of the main reasons to move your app into a Docker image is to make it easy to share it with others. But you don't have to upload image files to Dropbox or publish them on a website. Registries provide a standardized way to share Docker images, kind of like Git repositories. With a Docker registry, you can upload images, and your users can download them and run them as containers with just a few simple commands.
+
+docker login -> logs into docker hub
+
+docker tag imageName julianrios/imageTag -> will create this tag name
+
+docker push julianrios/imageTag -> pushes to hub
+
+docker pull julianrios/imageName -> pulls the latest image
 
 ### What can Docker be used for:
 Docker lets you run apps with little knowledge of how it works internally.
@@ -133,3 +151,9 @@ Bridge Network - a single aggregate network from multiple communication networks
 
 Nginx - a popular web server/reverse proxy used for deploying websites and services on Linux machines.
 
+Node.js: A JavaScript runtime for non-browser environments.
+package.json: A file that defines a JavaScript packages settings (i.e. how to build it, how to start it, metadata, etc.)
+
+Express: A JavaScript/Node.js web server framework, like Flask or Django for Python, or Sinatra or Ruby on Rails for Ruby.
+
+NPM: Node.js Package Manager, the package manager for installing JavaScript/Node.js packages into your development or production environment.
