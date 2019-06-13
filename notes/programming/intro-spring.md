@@ -171,12 +171,112 @@ JAR (Java ARchive) file is a bundle of compiled Java Code bundle together like a
 Allows you to write a bunch of java code and distribute it as a app or library. 
 If someone want to use it all that is need is to include the classpath within the file 
 
-
-
-
 ## Gradle
 v2.5.7-SNAPSHOT
 MAJOR version when you make incompatible API changes,
 MINOR version when you add functionality in a backwards-compatible manner, and
 PATCH version when you make backwards-compatible bug fixes.
 SNAPSHOT is the latest dev version
+
+### Finding 3rd Party Libraries on Maven Central
+You can browse the Maven Central repository at search.maven.org directly, but I find searching on this site to be a bit overwhelming and cumbersome.
+
+Instead, I either go to mvnrepository.com to find my Gradle dependencies, or I Google "library-name Maven", and click the first link in the search results that links to mvnrepository.com. Usually, it's the one I'm looking for.
+
+### Importing a Gradle Project into IntelliJ
+If you've downloaded a Gradle project from Treehouse, Github, or another source, importing it into your IDE is usually as simple as choosing to import a project, selecting "Gradle Project", then choosing the build.gradle file. Such is the case for IntelliJ. Then, you can use your IDE (or the command line) to refresh dependencies to download all those third-party libraries. This allows developers (like you!) to distribute source code without having to pass around hefty JAR files. Among other advantages, it's a nice way to leave a smaller digital footprint.
+
+The spring framework consists of many different components. A component is simply a set of related functionality that in the case of spring resides in a jar file of its own.
+
+The core component contains lots of the gears that turn the spring engine. Most of the classes you won't directly use, even though it's all being used by other pieces of the spring framework. 
+
+The beans component is the part of the spring framework that allows any Java object to be created and used in what's called the Servlet Container, which is the container of your entire running application on the web server.
+
+The Context Component gives us a bunch of annotations that will leverage in configuring our application including, 
+the Configuration Annotation which will apply to classes that application configuration code, 
+the Controller Annotation which will be applied to a class that we write to handle requests to specific URIs, and 
+the ComponentScan annotation, which will tell the spring framework to scan our Java classes for things like controllers.
+SpEL stands for Spring Expression Language, and is a language that we'll put to use in our HTML templates that will allow us to iterate over, perform operations with, and format Java data for display.
+AOP stands for Aspect-Oriented Programming, this component allows us to cleanly apply functionality to many, or all parts of our web application.
+Such as adding a security check to verify that a user is logged-in before performing certain tasks like uploading new GIFs, or marking or unmarking GIFs as favorites
+
+Spring web MVC -> Dispatcher Servlet 
+Think of the Dispatcher Servlet as our application's usher, who is there to receive requests from the web server, and usher or dispatch them according to our configuration and code. When our code is done processing the request, the dispatcher servlet ushers the response to the door, handing it back to the web server to send it back to the client.
+
+
+the web component, from which we'll get the ability to capture a request to a specific resource and take action accordingly.
+For example in the MoneyThyme app a user can click on a profile which the URI we can capture and then respond with a page that shows them all of their accounts.
+
+
+**Springboot allows use to create a stand alone runnable Spring application that has an embedded web server.**
+
+Tomcat is the apache web server that can run java applications.
+
+Deployment referes to the process of taking all of our compiled code and necessary libraries and launching our application in its target environment.
+
+Localhost is the alias or hostname that maps to the IP address of your own local machine. 
+
+## JavaBeans vs. Spring Beans
+Spring beans typically adhere to the requirements of the JavaBean specification. Independent of Spring, a JavaBean is any object that meets the following requirements:
+
+has a public, default constructor,
+has fields that are accessed through public getters & setters, which follow the standard naming convention of getFieldName (or isFieldName for boolean fields) and setFieldName, and
+implements java.io.Serializable.
+In general, Spring beans follow this convention, except that Spring beans do not need to implement java.io.Serializable.
+
+In general, Spring beans are any object constructed and managed by the Spring Framework. Spring beans are the objects eligible for injection with the @Autowired annotation, as you'll see later in the course.
+
+@EnableAutoConfiguration in  the application configuration class this annotaion will auto-configure your Spring app upon deployment.
+
+A controller is a java object whose job is to handle requests to certain URIs applying annotations to methods within this class indicate which URI each method should handle.
+
+## Thymeleaf Templates and XML Compliance
+Thymeleaf is a templating engine that allows you to write HTML while including placeholders for data that will come in the form of Java objects.
+These place holders leverage the spring expression langauge to access the fields of your job objects from its getters and setters.
+
+Within the controller use a request mapping and return the name of the html file to return a html template of the client side you want the user to see. 
+
+**The process begins with the user making an HTTP request to our web server. Based on the request the server knows from the host name to hand the request to our application. In the app the dispatcher servlet receives the request and the URI is examined. From the URI the dispatcher servlet determines which controller and which of its methods is mapped to the URI requested by using the RequestMapping annotation. The mapped controller method is called which will perform any desired actions and gather data to be used in putting together a response to the original HTTP request. That data is feed to a Spring View Resolver. Because the app is configured to use Thymeleaf Spring will then pass our data to the proper Thymeleaf template, jam the data into the proper place holders, and produce a final HTML prodcut that will be handed back to the dispatchers servlet. The dispatcher servlet hands it back to the web server. With its HTML the web server creates an HTTP response with a status code of 200(okay) and it includes the HTML from our application in the response body. The entire response is then sent to the client in response to th original HTTP request**
+
+Thymeleaf is based on XML processing, and as such can be used to do much more than create HTML files. But this also means that, by default, HTML templates must by XML-compliant. So, some of the syntax that passes as valid HTML5 won't work in Thymeleaf without custom configuration of the templating engine in Spring.
+
+If you want to use HTML5-style syntax instead, you'll need to do the following:
+
+Add a properties file at src/main/resources/application.properties
+Add the following text at the top:
+spring.thymeleaf.mode = LEGACYHTML5
+In the dependencies block of build.gradle, add Neko HTML as a runtime dependency:
+runtime 'net.sourceforge.nekohtml:nekohtml:1.9.22'
+Now you should be able to use HTML5 instead of XML-compliant markup in your Thymeleaf templates. For example, instead of
+
+<link rel="stylesheet" th:href="@{/app.css}"/>
+
+You could omit the self-closing slash:
+
+<link rel="stylesheet" th:href="@{/app.css}">
+
+This can be a huge time saver in converting static HTML5 files from front-end designers into Thymeleaf templates.
+
+Assets to a web project generally referred to the images, CSS, JavaScript, and videos, and fonts that are needed for pages to display in a browser.
+Named static since they will not change after releasing the application.
+assets -> static -> non-static?
+
+### Modeling Data with POJOs
+A POJO(plain old java object) is a java object whose class is coded for its natural functionality and not for the framework which it will be used in. That means the object is coded with fields, getters, setters, and methods that are useful to the object as it fits in with other classes of you application. Not becuase of how it fits in with the framework you've chose such as Spring.
+
+The class we write to represent each object is referred to as a model because it serves as a model for the objects we'll create. 
+
+Example:
+Store gif data into gif objects, feed them into our thymeleaf templates, then use the spring expression language in those templates to access that data such as names and dates uploaded.  
+
+Arrays.asList() -> allows you to pass through any number of objects alternative to creating a new arraylist and using the add method a bunch of times to add individual objects. 
+
+@Autowired tells spring to assign a GifRepository object to this instance field private GifRepository gifRepository; 
+As soon as its needed.
+The GifRepository must be annotated with @Component or @Repository for spring to pick this up during its initial scan of our app being loaded. When the GifController needs a GifRepository class spring will create one or use one thats already been created. The process of this runtime creation of objects that is the injection using the autowired annotation. **This process without explicitly writing code to construct and assign objects is called dependency injection.**
+Code that calls the GifRepository constructor and assigning the resulting object to the GifRepository field was never written. Instead spring wire our objects together with @Autowired
+
+
+
+
+
