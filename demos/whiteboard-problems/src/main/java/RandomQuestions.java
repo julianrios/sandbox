@@ -1,4 +1,4 @@
-public class Main {
+public class RandomQuestions {
     private static Integer x = 10;
     private static Integer y = 2;
 
